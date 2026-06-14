@@ -61,7 +61,7 @@ export default function Hero() {
     <section
       ref={heroRef}
       data-section="hero"
-      className="relative h-screen w-full overflow-hidden flex items-end"
+      className="relative h-screen w-full overflow-hidden flex items-center justify-center"
       id="hero-section"
     >
       {/* Background: video, fallback transparent global background exposure */}
@@ -80,13 +80,13 @@ export default function Hero() {
       {/* Vignette overlay */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
-        style={{ background: 'rgba(9,8,10,0.5)' }}
+        style={{ background: 'rgba(9,8,10,0.55)' }}
       />
 
-      {/* Hero text */}
-      <div className="relative z-20 px-6 md:px-12 pb-20 md:pb-28 max-w-[1280px] mx-auto w-full">
+      {/* Hero text (centered vertically and horizontally) */}
+      <div className="relative z-20 px-6 max-w-4xl mx-auto w-full flex flex-col items-center justify-center text-center">
         <h1
-          className="font-display text-hero font-light text-text leading-none flex flex-wrap select-none"
+          className="font-display text-hero font-light text-text leading-none flex flex-wrap justify-center select-none"
           style={{ perspective: '800px' }}
         >
           {nameChars.map((char, index) => (
@@ -105,7 +105,7 @@ export default function Hero() {
         </h1>
         <p
           ref={subtitleRef}
-          className="font-mono text-sm md:text-base text-muted mt-5 tracking-wide"
+          className="font-mono text-sm md:text-base text-muted mt-6 tracking-widest uppercase"
           style={{ opacity: 0 }}
         >
           Developer · Security

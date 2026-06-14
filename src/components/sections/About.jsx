@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
 import { about } from '../../data/content'
+import InteractiveGrid from '../canvas/InteractiveGrid'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -119,6 +120,9 @@ export default function About() {
       className="relative py-40 md:py-56 overflow-hidden"
       id="about-section"
     >
+      {/* Interactive hex-grid nodes */}
+      <InteractiveGrid />
+
       {/* Background Graphic Asset */}
       <div
         className="absolute inset-0 bg-cover bg-center pointer-events-none select-none mix-blend-lighten"

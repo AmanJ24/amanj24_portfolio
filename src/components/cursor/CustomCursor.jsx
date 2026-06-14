@@ -6,6 +6,7 @@ export default function CustomCursor() {
   const labelRef = useRef(null)
   const [label, setLabel] = useState('')
   const [isHovering, setIsHovering] = useState(false)
+  const [snappedTarget, setSnappedTarget] = useState(null)
   const [isTouch, setIsTouch] = useState(false)
 
   useEffect(() => {
@@ -19,29 +20,52 @@ export default function CustomCursor() {
     const cursor = cursorRef.current
     if (!cursor) return
 
-    // GSAP quickTo for smooth lag with organic spring glide duration
-    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.32, ease: 'power3.out' })
-    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.32, ease: 'power3.out' })
+    // QuickTo handlers for smooth organic spring lag
+    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.28, ease: 'power3.out' })
+    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.28, ease: 'power3.out' })
 
     const handleMouseMove = (e) => {
-      xTo(e.clientX)
-      yTo(e.clientY)
+      if (snappedTarget) {
+        const rect = snappedTarget.getBoundingClientRect()
+        const targetX = rect.left + rect.width / 2
+        const targetY = rect.top + rect.height / 2
+        
+        // Dynamic drag/offset factor (pull cursor 12% towards mouse pointer for organic elasticity)
+        const dx = e.clientX - targetX
+        const dy = e.clientY - targetY
+        
+        xTo(targetX + dx * 0.12)
+        yTo(targetY + dy * 0.12)
+      } else {
+        xTo(e.clientX)
+        yTo(e.clientY)
+      }
     }
 
     const handleMouseEnter = (e) => {
-      const target = e.target.closest('a, button, [data-cursor]')
+      const target = e.target.closest('a, button, [data-cursor], .magnetic-btn, .nav-link')
       if (target) {
         setIsHovering(true)
-        const cursorLabel = target.dataset.cursor || 'open'
+        const cursorLabel = target.dataset.cursor || ''
         setLabel(cursorLabel)
+
+        // Snappable classes or components
+        if (
+          target.classList.contains('magnetic-btn') || 
+          target.tagName === 'BUTTON' || 
+          target.closest('#nav-main')
+        ) {
+          setSnappedTarget(target)
+        }
       }
     }
 
     const handleMouseLeave = (e) => {
-      const target = e.target.closest('a, button, [data-cursor]')
+      const target = e.target.closest('a, button, [data-cursor], .magnetic-btn, .nav-link')
       if (target) {
         setIsHovering(false)
         setLabel('')
+        setSnappedTarget(null)
       }
     }
 
@@ -54,32 +78,45 @@ export default function CustomCursor() {
       document.removeEventListener('mouseover', handleMouseEnter)
       document.removeEventListener('mouseout', handleMouseLeave)
     }
-  }, [])
+  }, [snappedTarget])
 
-  // Animate cursor size on hover state change
+  // Dynamic morph shape parameters on target focus
   useEffect(() => {
     if (isTouch || !cursorRef.current) return
 
-    if (isHovering) {
+    if (snappedTarget) {
+      const rect = snappedTarget.getBoundingClientRect()
       gsap.to(cursorRef.current, {
-        width: 36,
-        height: 36,
+        width: rect.width + 16,
+        height: rect.height + 10,
+        borderRadius: '6px',
         backgroundColor: 'transparent',
-        border: '1.5px solid #BFA98A',
+        border: '1.2px dashed #BFA98A', // HUD dashes
+        duration: 0.25,
+        ease: 'power2.out',
+      })
+    } else if (isHovering) {
+      gsap.to(cursorRef.current, {
+        width: 38,
+        height: 38,
+        borderRadius: '50%',
+        backgroundColor: 'transparent',
+        border: '1.2px solid #BFA98A',
         duration: 0.25,
         ease: 'power2.out',
       })
     } else {
       gsap.to(cursorRef.current, {
-        width: 18,
-        height: 18,
+        width: 14,
+        height: 14,
+        borderRadius: '50%',
         backgroundColor: '#BFA98A',
         border: 'none',
         duration: 0.25,
         ease: 'power2.out',
       })
     }
-  }, [isHovering, isTouch])
+  }, [snappedTarget, isHovering, isTouch])
 
   if (isTouch) return null
 
@@ -88,8 +125,8 @@ export default function CustomCursor() {
       ref={cursorRef}
       className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
       style={{
-        width: 18,
-        height: 18,
+        width: 14,
+        height: 14,
         borderRadius: '50%',
         backgroundColor: '#BFA98A',
         transform: 'translate(-50%, -50%)',
@@ -97,7 +134,7 @@ export default function CustomCursor() {
         mixBlendMode: 'difference',
       }}
     >
-      {isHovering && label && (
+      {isHovering && label && !snappedTarget && (
         <span
           ref={labelRef}
           className="font-mono text-accent"

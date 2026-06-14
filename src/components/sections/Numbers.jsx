@@ -46,7 +46,7 @@ export default function Numbers() {
             const valueEl = el.querySelector('.counter-value')
             if (!valueEl) return
 
-            const chars = '0123456789%X#@$&?/\\<>*!+-='
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
             const length = targetVal.length
             let frame = 0
             const totalFrames = 80 // duration around 1.3s at 60fps

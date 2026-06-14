@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { person } from '../../data/content'
 import Magnetic from '../effects/Magnetic'
 import { useSoundSynth } from '../../hooks/useSoundSynth'
+import MatrixRain from '../canvas/MatrixRain'
+import GlitchText from '../effects/GlitchText'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -40,7 +42,7 @@ function ElasticChar({ char }) {
       onMouseLeave={handleMouseLeave}
       onMouseEnter={playTick}
       style={{
-        opacity: 0,
+        opacity: 1,
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         // Elastic transition timing on snapback
         transition: offset.x === 0 && offset.y === 0 
@@ -137,10 +139,13 @@ export default function Contact() {
       className="relative py-40 md:py-56 overflow-hidden noise-overlay"
       id="contact-section"
     >
-      {/* Background gradient accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface/40 to-bg pointer-events-none" />
+      {/* Falling matrix code rain background */}
+      <MatrixRain />
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-12">
+      {/* Background gradient accent */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface/40 to-bg pointer-events-none z-10" />
+
+      <div className="relative z-20 max-w-[1280px] mx-auto px-6 md:px-12">
         {/* Section counter */}
         <span className="font-mono text-xs text-muted tracking-widest block mb-24 md:mb-32">09 / 09</span>
 
@@ -153,7 +158,7 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
         >
           <span className="font-mono text-sm text-muted uppercase tracking-[0.3em]">
-            Get in touch
+            <GlitchText text="Get in touch" />
           </span>
         </motion.div>
 
@@ -178,7 +183,7 @@ export default function Contact() {
             ref={emailRef}
             href={`mailto:${person.email}`}
             onClick={playClick}
-            className="inline-block font-display text-[clamp(1.8rem,6vw,5.5rem)] font-normal leading-tight text-shimmer"
+            className="inline-block font-display text-[clamp(1.8rem,6vw,5.5rem)] font-normal leading-tight text-text hover:text-accent transition-colors duration-300"
             style={{ perspective: '600px' }}
           >
             {emailCharsArray.map((char, i) => (

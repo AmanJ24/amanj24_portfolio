@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
 import { now as nowData } from '../../data/content'
 import { useSoundSynth } from '../../hooks/useSoundSynth'
+import GlitchText from '../effects/GlitchText'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -130,7 +131,7 @@ export default function Now() {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sage animate-glow-sage" />
             </span>
             <span className="font-mono text-sm text-muted uppercase tracking-[0.2em]">
-              Live status
+              <GlitchText text="Live status" />
             </span>
           </motion.div>
 
@@ -182,7 +183,7 @@ export default function Now() {
 
           {/* Right Column: Interactive Cyber Diagnostics terminal console */}
           <motion.div
-            className="bg-surface/25 border border-border/50 rounded-md p-6 font-mono text-xs flex flex-col justify-between shadow-lg h-[260px] relative hover:border-sage/35 transition-colors duration-500"
+            className="bg-surface/25 border border-border/50 rounded-md p-6 font-mono text-xs flex flex-col justify-between shadow-lg h-[260px] relative hover:border-sage/35 transition-colors duration-500 crt-terminal"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

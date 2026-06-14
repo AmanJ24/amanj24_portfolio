@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { skills, credentials, ctfs } from '../../data/content'
 import Tilt from '../effects/Tilt'
 import { useSoundSynth } from '../../hooks/useSoundSynth'
+import GlitchText from '../effects/GlitchText'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -55,6 +56,56 @@ function Lightbox({ image, title, onClose }) {
   )
 }
 
+/* ─── Cipher Card Decryption Scrambler ─── */
+function DecryptHoverText({ text }) {
+  const [displayText, setDisplayText] = useState(text)
+  const [isHovering, setIsHovering] = useState(false)
+  const { playTick } = useSoundSynth()
+
+  useEffect(() => {
+    if (!isHovering) {
+      setDisplayText(text)
+      return
+    }
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const textArray = text.split('')
+    let iterations = 0
+    
+    const interval = setInterval(() => {
+      const scrambled = textArray.map((char, index) => {
+        if (char === ' ') return ' '
+        if (index < iterations) return text[index]
+        return chars[Math.floor(Math.random() * chars.length)]
+      }).join('')
+
+      setDisplayText(scrambled)
+      
+      if (iterations >= text.length) {
+        clearInterval(interval)
+      }
+      
+      iterations += 1/2
+      
+      if (Math.random() > 0.4) {
+        playTick()
+      }
+    }, 25)
+
+    return () => clearInterval(interval)
+  }, [isHovering, text])
+
+  return (
+    <span
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      className="select-none"
+    >
+      {displayText}
+    </span>
+  )
+}
+
 /* ─── Certificate / CTF card with image & Tilt ─── */
 function CertCard({ item, type, onImageClick }) {
   const name = type === 'credential' ? item.name : item.event
@@ -76,33 +127,44 @@ function CertCard({ item, type, onImageClick }) {
         onMouseEnter={playTick}
       >
         {/* Image area */}
-        {item.image && imageExists ? (
+        {item.image ? (
           <div
-            className="relative aspect-[16/10] bg-surface2 overflow-hidden cursor-none"
+            className="relative aspect-[16/10] bg-surface2/35 overflow-hidden cursor-none flex items-center justify-center border-b border-border/20"
             onClick={() => {
-              playClick()
-              onImageClick(item.image, name)
+              if (imageExists) {
+                playClick()
+                onImageClick(item.image, name)
+              }
             }}
             role="button"
             tabIndex={0}
-            data-cursor="view"
+            data-cursor={imageExists ? "view" : "default"}
           >
-            <img
-              src={item.image}
-              alt={name}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              onError={handleImageError}
-            />
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-bg/0 group-hover:bg-bg/35 transition-colors duration-500 flex items-center justify-center">
-              <motion.div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="w-12 h-12 rounded-full border border-accent/40 flex items-center justify-center backdrop-blur-sm bg-bg/25">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BFA98A" strokeWidth="1.5">
-                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-              </motion.div>
-            </div>
+            {imageExists ? (
+              <img
+                src={item.image}
+                alt={name}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                onError={handleImageError}
+              />
+            ) : (
+              <div className="font-mono text-[10px] text-muted/30 uppercase tracking-widest text-center px-4 select-none">
+                [ CERTIFICATE PREVIEW // OFFLINE ]
+              </div>
+            )}
+            
+            {imageExists && (
+              /* Hover overlay */
+              <div className="absolute inset-0 bg-bg/0 group-hover:bg-bg/35 transition-colors duration-500 flex items-center justify-center">
+                <motion.div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="w-12 h-12 rounded-full border border-accent/40 flex items-center justify-center backdrop-blur-sm bg-bg/25">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BFA98A" strokeWidth="1.5">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </motion.div>
+              </div>
+            )}
           </div>
         ) : null}
 
@@ -117,7 +179,7 @@ function CertCard({ item, type, onImageClick }) {
             )}
             <div>
               <h4 className="font-body text-sm md:text-base text-text group-hover:text-accent transition-colors duration-500 leading-snug">
-                {name}
+                <DecryptHoverText text={name} />
               </h4>
               {type === 'credential' && (
                 <span className="font-mono text-[9px] text-sage/80 uppercase tracking-widest mt-2.5 inline-block select-none">
@@ -166,7 +228,7 @@ function SkillBlock({ category, items, index }) {
 /* ─── Terminal Panel component ─── */
 function TerminalPanel({ title, children }) {
   return (
-    <div className="bg-bg/40 border border-border/50 rounded-md p-6 md:p-8 relative font-mono shadow-lg hover:border-border transition-colors duration-500">
+    <div className="bg-bg/40 border border-border/50 rounded-md p-6 md:p-8 relative font-mono shadow-lg hover:border-border transition-colors duration-500 crt-terminal">
       {/* Terminal window buttons mock */}
       <div className="flex items-center gap-2 mb-8 border-b border-border/30 pb-4 select-none">
         <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]/60" />
@@ -244,7 +306,7 @@ export default function Credentials() {
             className="mb-24 md:mb-32"
           >
             <h2 className="font-display text-display font-normal text-text mb-4">
-              Skills & Credentials
+              <GlitchText text="Skills & Credentials" />
             </h2>
             <div className="h-px w-24 bg-accent/30" />
           </motion.div>
@@ -279,7 +341,7 @@ export default function Credentials() {
               viewport={{ once: true }}
             >
               <span className="w-2 h-2 rounded-full bg-sage animate-glow-sage" />
-              Earned Credentials
+              <GlitchText text="Earned Credentials" />
             </motion.h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {credentials.filter(c => c.earned).map((cred) => (
@@ -302,7 +364,7 @@ export default function Credentials() {
               viewport={{ once: true }}
             >
               <span className="text-accent/60 font-mono">⚑</span>
-              CTF Participation
+              <GlitchText text="CTF Participation" />
             </motion.h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {ctfs.map((ctf) => (
