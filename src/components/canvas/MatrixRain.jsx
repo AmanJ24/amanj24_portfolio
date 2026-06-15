@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver'
 
 export default function MatrixRain() {
   const canvasRef = useRef(null)
+  const isIntersecting = useIntersectionObserver(canvasRef)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    if (prefersReducedMotion || !isIntersecting) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -60,7 +62,7 @@ export default function MatrixRain() {
       cancelAnimationFrame(animationId)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [isIntersecting])
 
   return (
     <canvas

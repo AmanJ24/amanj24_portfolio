@@ -14,9 +14,19 @@ gsap.registerPlugin(ScrollTrigger)
 function ElasticChar({ char }) {
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const { playTick } = useSoundSynth()
+  const rectRef = useRef(null)
+
+  const handleMouseEnter = (e) => {
+    rectRef.current = e.currentTarget.getBoundingClientRect()
+    playTick()
+  }
 
   const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
+    let rect = rectRef.current
+    if (!rect) {
+      rect = e.currentTarget.getBoundingClientRect()
+      rectRef.current = rect
+    }
     const cx = rect.left + rect.width / 2
     const cy = rect.top + rect.height / 2
     
@@ -33,6 +43,7 @@ function ElasticChar({ char }) {
   const handleMouseLeave = () => {
     // Snap back
     setOffset({ x: 0, y: 0 })
+    rectRef.current = null
   }
 
   return (
@@ -40,7 +51,7 @@ function ElasticChar({ char }) {
       className="email-char inline-block cursor-none select-none"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onMouseEnter={playTick}
+      onMouseEnter={handleMouseEnter}
       style={{
         opacity: 1,
         transform: `translate(${offset.x}px, ${offset.y}px)`,

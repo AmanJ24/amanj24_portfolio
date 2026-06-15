@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver'
 
 export default function NetworkMesh() {
   const canvasRef = useRef(null)
+  const isIntersecting = useIntersectionObserver(canvasRef)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    if (prefersReducedMotion || !isIntersecting) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -92,6 +94,8 @@ export default function NetworkMesh() {
 
       // Draw connection lines
       ctx.lineWidth = 0.55
+      const limitSq = 115 * 115
+      
       for (let i = 0; i < nodes.length; i++) {
         const n1 = nodes[i]
         n1.update(mouseX, mouseY)
@@ -101,10 +105,11 @@ export default function NetworkMesh() {
           const n2 = nodes[j]
           const dx = n1.x - n2.x
           const dy = n1.y - n2.y
-          const dist = Math.hypot(dx, dy)
+          const distSq = dx * dx + dy * dy
 
-          if (dist < 115) {
-            // Transparency increases when distance increases
+          if (distSq < limitSq) {
+            // Transparency increases when distance increases (only calculate sqrt if within threshold)
+            const dist = Math.sqrt(distSq)
             const alpha = (115 - dist) / 115 * 0.12
             ctx.strokeStyle = `rgba(191, 169, 138, ${alpha})`
             ctx.beginPath()
@@ -126,7 +131,7 @@ export default function NetworkMesh() {
       canvas.removeEventListener('mouseleave', handleMouseLeave)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [isIntersecting])
 
   return (
     <canvas

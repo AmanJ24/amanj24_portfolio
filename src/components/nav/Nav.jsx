@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { person } from '../../data/content'
 import { useAssets } from '../../hooks/useAssets'
 import Magnetic from '../effects/Magnetic'
@@ -10,6 +11,7 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { hasResume } = useAssets()
   const { muted, toggleMute, playTick, playClick } = useSoundSynth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,14 +23,19 @@ export default function Nav() {
 
   const scrollToTop = () => {
     playClick()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (window.location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      navigate('/')
+    }
   }
 
   const navLinks = [
-    { label: 'GitHub', href: person.github, external: true },
-    { label: 'LinkedIn', href: person.linkedin, external: true },
+    { label: 'Home', href: '/', external: false, internal: true },
+    { label: 'Work', href: '/projects', external: false, internal: true },
+    { label: 'Credentials', href: '/credentials', external: false, internal: true },
+    { label: 'Contact', href: '/contact', external: false, internal: true },
     ...(hasResume ? [{ label: 'Resume', href: '/assets/resume.pdf', external: true }] : []),
-    { label: 'Say Hello', href: `mailto:${person.email}`, external: false },
   ]
 
   return (
@@ -47,7 +54,7 @@ export default function Nav() {
           <button
             onClick={scrollToTop}
             onMouseEnter={playTick}
-            className="font-display text-xl text-text tracking-tight hover:text-accent transition-colors duration-300"
+            className="font-display text-xl text-text tracking-tight hover:text-accent transition-colors duration-300 cursor-none"
             id="nav-logo"
           >
             AJ
@@ -58,60 +65,41 @@ export default function Nav() {
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Magnetic key={link.label} range={40} strength={0.3}>
-              <a
-                href={link.href}
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                onMouseEnter={playTick}
-                onClick={playClick}
-                className="font-mono text-sm text-muted hover:text-text transition-colors duration-300 px-2 py-1"
-                id={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {link.label}
-              </a>
+              {link.internal ? (
+                <NavLink
+                  to={link.href}
+                  onMouseEnter={playTick}
+                  onClick={playClick}
+                  className={({ isActive }) =>
+                    `font-mono text-sm transition-all duration-300 px-2 py-1 cursor-none ${
+                      isActive ? 'text-accent border-b border-accent/40' : 'text-muted hover:text-text'
+                    }`
+                  }
+                  id={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {link.label}
+                </NavLink>
+              ) : (
+                <a
+                  href={link.href}
+                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  onMouseEnter={playTick}
+                  onClick={playClick}
+                  className="font-mono text-sm text-muted hover:text-text transition-colors duration-300 px-2 py-1 cursor-none"
+                  id={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {link.label}
+                </a>
+              )}
             </Magnetic>
           ))}
 
-          {/* Sound Synthesizer Control Toggle */}
-          <div className="h-4 w-px bg-border/60 mx-1" />
-          
-          <Magnetic range={30} strength={0.2}>
-            <button
-              onClick={() => {
-                toggleMute()
-                // Let the click trigger on the state after toggle
-                setTimeout(() => {
-                  if (muted) {
-                    // We just unmuted
-                    const oscCtx = new (window.AudioContext || window.webkitAudioContext)()
-                    const osc = oscCtx.createOscillator()
-                    const gain = oscCtx.createGain()
-                    osc.connect(gain)
-                    gain.connect(oscCtx.destination)
-                    gain.gain.setValueAtTime(0.04, oscCtx.currentTime)
-                    gain.gain.exponentialRampToValueAtTime(0.0001, oscCtx.currentTime + 0.08)
-                    osc.frequency.setValueAtTime(900, oscCtx.currentTime)
-                    osc.start()
-                    osc.stop(oscCtx.currentTime + 0.08)
-                  }
-                }, 10)
-              }}
-              onMouseEnter={playTick}
-              className="font-mono text-xs text-muted hover:text-accent transition-colors duration-300 flex items-center gap-2 px-2 py-1"
-              id="nav-sound-toggle"
-              aria-label="Toggle sound effects"
-            >
-              <span className="relative flex h-2 w-2">
-                {!muted && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />}
-                <span className={`relative inline-flex rounded-full h-2 w-2 ${muted ? 'bg-muted/40' : 'bg-accent'}`} />
-              </span>
-              {muted ? 'SOUND OFF' : 'SOUND ON'}
-            </button>
-          </Magnetic>
+
         </div>
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5"
+          className="md:hidden flex flex-col gap-1.5 cursor-none"
           onClick={() => {
             playClick()
             setMenuOpen(!menuOpen)
@@ -134,34 +122,39 @@ export default function Nav() {
         >
           <div className="flex flex-col gap-6">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                onClick={() => {
-                  playClick()
-                  setMenuOpen(false)
-                }}
-                className="font-mono text-sm text-muted hover:text-text transition-colors duration-300"
-              >
-                {link.label}
-              </a>
+              link.internal ? (
+                <NavLink
+                  key={link.label}
+                  to={link.href}
+                  onClick={() => {
+                    playClick()
+                    setMenuOpen(false)
+                  }}
+                  className={({ isActive }) =>
+                    `font-mono text-sm transition-colors duration-300 cursor-none ${
+                      isActive ? 'text-accent' : 'text-muted hover:text-text'
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  onClick={() => {
+                    playClick()
+                    setMenuOpen(false)
+                  }}
+                  className="font-mono text-sm text-muted hover:text-text transition-colors duration-300 cursor-none"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
 
-            {/* Mobile Sound Control Toggle */}
-            <div className="h-px bg-border/40 my-2" />
-            <button
-              onClick={() => {
-                toggleMute()
-              }}
-              className="font-mono text-sm text-muted hover:text-accent transition-colors duration-300 flex items-center gap-3 text-left"
-            >
-              <span className="relative flex h-2 w-2">
-                {!muted && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />}
-                <span className={`relative inline-flex rounded-full h-2 w-2 ${muted ? 'bg-muted/40' : 'bg-accent'}`} />
-              </span>
-              {muted ? 'SOUND OFF' : 'SOUND ON'}
-            </button>
+
           </div>
         </motion.div>
       )}

@@ -14,8 +14,11 @@ export default function Magnetic({ children, range = 50, strength = 0.3 }) {
     const xTo = gsap.quickTo(container, 'x', { duration: 0.8, ease: 'elastic.out(1, 0.3)' })
     const yTo = gsap.quickTo(container, 'y', { duration: 0.8, ease: 'elastic.out(1, 0.3)' })
 
+    let isListening = false
+    let rect = null
+
     const handleMouseMove = (e) => {
-      const rect = container.getBoundingClientRect()
+      if (!rect) return
       const centerX = rect.left + rect.width / 2
       const centerY = rect.top + rect.height / 2
 
@@ -28,22 +31,41 @@ export default function Magnetic({ children, range = 50, strength = 0.3 }) {
         xTo(distanceX * strength)
         yTo(distanceY * strength)
       } else {
-        // Return back to center position
-        xTo(0)
-        yTo(0)
+        // Left the magnetic range, stop listening to save CPU
+        stopListening()
       }
     }
 
-    const handleMouseLeave = () => {
-      xTo(0)
-      yTo(0)
+    const startListening = () => {
+      if (isListening) return
+      rect = container.getBoundingClientRect() // Read layout once on enter
+      window.addEventListener('mousemove', handleMouseMove)
+      isListening = true
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    const stopListening = () => {
+      if (!isListening) return
+      window.removeEventListener('mousemove', handleMouseMove)
+      xTo(0)
+      yTo(0)
+      isListening = false
+      rect = null
+    }
+
+    const handleMouseEnter = () => {
+      startListening()
+    }
+
+    const handleMouseLeave = () => {
+      stopListening()
+    }
+
+    container.addEventListener('mouseenter', handleMouseEnter)
     container.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      container.removeEventListener('mouseenter', handleMouseEnter)
       container.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [range, strength])

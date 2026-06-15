@@ -67,7 +67,7 @@ export default function Hero() {
       {/* Background: video, fallback transparent global background exposure */}
       {hasHeroVideo ? (
         <video
-          src="/assets/hero.mp4"
+          src="/assets/videos/typing.mp4"
           autoPlay
           muted
           loop
@@ -80,7 +80,7 @@ export default function Hero() {
       {/* Vignette overlay */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
-        style={{ background: 'rgba(9,8,10,0.55)' }}
+        style={{ background: 'rgba(9,8,10,0.65)' }}
       />
 
       {/* Hero text (centered vertically and horizontally) */}

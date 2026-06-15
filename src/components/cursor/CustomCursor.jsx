@@ -24,11 +24,26 @@ export default function CustomCursor() {
     const xTo = gsap.quickTo(cursor, 'x', { duration: 0.28, ease: 'power3.out' })
     const yTo = gsap.quickTo(cursor, 'y', { duration: 0.28, ease: 'power3.out' })
 
+    let snappedRect = null
+
+    const updateSnappedRect = () => {
+      if (snappedTarget) {
+        snappedRect = snappedTarget.getBoundingClientRect()
+      } else {
+        snappedRect = null
+      }
+    }
+
+    // Initial bounding box calculation on snapped target change
+    updateSnappedRect()
+
     const handleMouseMove = (e) => {
       if (snappedTarget) {
-        const rect = snappedTarget.getBoundingClientRect()
-        const targetX = rect.left + rect.width / 2
-        const targetY = rect.top + rect.height / 2
+        if (!snappedRect) {
+          snappedRect = snappedTarget.getBoundingClientRect()
+        }
+        const targetX = snappedRect.left + snappedRect.width / 2
+        const targetY = snappedRect.top + snappedRect.height / 2
         
         // Dynamic drag/offset factor (pull cursor 12% towards mouse pointer for organic elasticity)
         const dx = e.clientX - targetX
@@ -69,14 +84,22 @@ export default function CustomCursor() {
       }
     }
 
+    const handleScrollOrResize = () => {
+      updateSnappedRect()
+    }
+
     window.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseover', handleMouseEnter)
     document.addEventListener('mouseout', handleMouseLeave)
+    window.addEventListener('scroll', handleScrollOrResize, { passive: true })
+    window.addEventListener('resize', handleScrollOrResize, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseover', handleMouseEnter)
       document.removeEventListener('mouseout', handleMouseLeave)
+      window.removeEventListener('scroll', handleScrollOrResize)
+      window.removeEventListener('resize', handleScrollOrResize)
     }
   }, [snappedTarget])
 

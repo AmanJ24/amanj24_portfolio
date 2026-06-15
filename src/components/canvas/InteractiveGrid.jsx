@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver'
 
 export default function InteractiveGrid() {
   const canvasRef = useRef(null)
+  const isIntersecting = useIntersectionObserver(canvasRef)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    if (prefersReducedMotion || !isIntersecting) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -26,9 +28,22 @@ export default function InteractiveGrid() {
       for (let c = 0; c < cols; c++) {
         const x = c * spacingX + (r % 2 === 0 ? spacingX / 2 : 0)
         const y = r * spacingY
-        cells.push({ x, y, intensity: 0 })
+        cells.push({ x, y, intensity: 0, neighbors: [] })
       }
     }
+
+    // Precalculate neighbors (within 72px) once to avoid O(N^2) distance calculations inside the render loop
+    cells.forEach((cell) => {
+      cells.forEach((other) => {
+        if (cell === other) return
+        const dx = cell.x - other.x
+        const dy = cell.y - other.y
+        const distSq = dx * dx + dy * dy
+        if (distSq > 0 && distSq < 72 * 72) {
+          cell.neighbors.push(other)
+        }
+      })
+    })
 
     let mouseX = null
     let mouseY = null
@@ -85,16 +100,11 @@ export default function InteractiveGrid() {
           ctx.strokeStyle = `rgba(191, 169, 138, ${cell.intensity * 0.08})`
           ctx.lineWidth = 0.65
 
-          cells.forEach((neighbor) => {
-            if (neighbor === cell) return
-            const d = Math.hypot(cell.x - neighbor.x, cell.y - neighbor.y)
-            // Hexagon neighbor spacing bounds check
-            if (d > 0 && d < 72) {
-              ctx.beginPath()
-              ctx.moveTo(cell.x, cell.y)
-              ctx.lineTo(neighbor.x, neighbor.y)
-              ctx.stroke()
-            }
+          cell.neighbors.forEach((neighbor) => {
+            ctx.beginPath()
+            ctx.moveTo(cell.x, cell.y)
+            ctx.lineTo(neighbor.x, neighbor.y)
+            ctx.stroke()
           })
         }
       })
@@ -110,7 +120,7 @@ export default function InteractiveGrid() {
       canvas.removeEventListener('mouseleave', handleMouseLeave)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [isIntersecting])
 
   return (
     <canvas

@@ -1,17 +1,14 @@
 import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useLenis } from './hooks/useLenis'
 import CustomCursor from './components/cursor/CustomCursor'
 import Nav from './components/nav/Nav'
-import Hero from './components/sections/Hero'
-import Statement from './components/sections/Statement'
-import Projects from './components/sections/Projects'
-import Numbers from './components/sections/Numbers'
-import About from './components/sections/About'
-import Approach from './components/sections/Approach'
-import Credentials from './components/sections/Credentials'
-import Now from './components/sections/Now'
-import Contact from './components/sections/Contact'
 import Footer from './components/footer/Footer'
+import Home from './pages/Home'
+import ProjectsPage from './pages/ProjectsPage'
+import ProjectDetail from './pages/ProjectDetail'
+import CredentialsPage from './pages/CredentialsPage'
+import ContactPage from './pages/ContactPage'
 import { useSoundSynth } from './hooks/useSoundSynth'
 
 export default function App() {
@@ -25,34 +22,44 @@ export default function App() {
 
     let lastScrollY = window.scrollY
     let scrollTimeout
+    let ticking = false
 
     const handleScrollEffects = () => {
-      // 1. Synth drone modulation
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = docHeight > 0 ? window.scrollY / docHeight : 0
-      updateDrone(progress)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // 1. Synth drone modulation
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight
+          const progress = docHeight > 0 ? window.scrollY / docHeight : 0
+          updateDrone(progress)
 
-      // 2. Chromatic aberration scroll-glitch on fast scroll
-      const currentScrollY = window.scrollY
-      const velocity = Math.abs(currentScrollY - lastScrollY)
-      lastScrollY = currentScrollY
+          // 2. Chromatic aberration scroll-glitch on fast scroll
+          const currentScrollY = window.scrollY
+          const velocity = Math.abs(currentScrollY - lastScrollY)
+          lastScrollY = currentScrollY
 
-      if (velocity > 14) {
-        document.documentElement.classList.add('chromatic-aberration')
-      } else {
-        document.documentElement.classList.remove('chromatic-aberration')
+          if (velocity > 14) {
+            document.documentElement.classList.add('chromatic-aberration')
+          } else {
+            document.documentElement.classList.remove('chromatic-aberration')
+          }
+
+          clearTimeout(scrollTimeout)
+          scrollTimeout = setTimeout(() => {
+            document.documentElement.classList.remove('chromatic-aberration')
+          }, 120)
+
+          ticking = false
+        })
+        ticking = true
       }
-
-      clearTimeout(scrollTimeout)
-      scrollTimeout = setTimeout(() => {
-        document.documentElement.classList.remove('chromatic-aberration')
-      }, 120)
     }
 
     window.addEventListener('scroll', handleScrollEffects, { passive: true })
     
     // Initial update trigger
-    handleScrollEffects()
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight
+    const progress = docHeight > 0 ? window.scrollY / docHeight : 0
+    updateDrone(progress)
 
     return () => {
       window.removeEventListener('scroll', handleScrollEffects)
@@ -63,29 +70,19 @@ export default function App() {
   }, [])
 
   return (
-    <>
+    <BrowserRouter>
       <CustomCursor />
       <Nav />
       <main>
-        <Hero />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Statement />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Projects />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Numbers />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <About />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Approach />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Credentials />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Now />
-        <hr className="border-t border-border/30 max-w-[1200px] mx-auto opacity-70" />
-        <Contact />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/credentials" element={<CredentialsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </main>
       <Footer />
-    </>
+    </BrowserRouter>
   )
 }

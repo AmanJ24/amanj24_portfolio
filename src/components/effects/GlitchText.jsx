@@ -1,10 +1,33 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function GlitchText({ text, speed = 25, delay = 0 }) {
   const [displayText, setDisplayText] = useState(text)
-  const [trigger, setTrigger] = useState(0)
+  const containerRef = useRef(null)
+  const [inView, setInView] = useState(false)
+  const [hoverTrigger, setHoverTrigger] = useState(0)
 
+  // 1. Observe when element enters viewport
   useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setInView(true)
+        observer.unobserve(el) // Only animate once on scroll-enter
+      }
+    }, { threshold: 0.15 })
+
+    observer.observe(el)
+    return () => {
+      if (el) observer.unobserve(el)
+    }
+  }, [])
+
+  // 2. Perform scramble logic
+  useEffect(() => {
+    if (!inView) return // Prevents offscreen shufflings on mount
+
     let interval
     let isCancelled = false
 
@@ -54,11 +77,12 @@ export default function GlitchText({ text, speed = 25, delay = 0 }) {
       isCancelled = true
       clearInterval(interval)
     }
-  }, [text, trigger, speed, delay])
+  }, [text, inView, hoverTrigger, speed, delay])
 
   return (
     <span
-      onMouseEnter={() => setTrigger((prev) => prev + 1)}
+      ref={containerRef}
+      onMouseEnter={() => setHoverTrigger((prev) => prev + 1)}
       className="font-inherit select-none cursor-none"
     >
       {displayText}
