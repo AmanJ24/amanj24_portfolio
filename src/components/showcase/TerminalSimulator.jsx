@@ -25,7 +25,7 @@ export default function TerminalSimulator() {
   const [visibleLines, setVisibleLines] = useState([])
   const [lineIdx, setLineIdx] = useState(0)
   const [isTyping, setIsTyping] = useState(true)
-  const terminalEndRef = useRef(null)
+  const consoleRef = useRef(null)
 
   useEffect(() => {
     if (lineIdx < terminalLines.length) {
@@ -41,8 +41,11 @@ export default function TerminalSimulator() {
   }, [lineIdx])
 
   useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    if (consoleRef.current) {
+      consoleRef.current.scrollTo({
+        top: consoleRef.current.scrollHeight,
+        behavior: 'smooth'
+      })
     }
   }, [visibleLines])
 
@@ -67,7 +70,7 @@ export default function TerminalSimulator() {
         </div>
 
         {/* Console Log Area */}
-        <div className="flex-1 p-5 overflow-y-auto space-y-2 scrollbar-none text-left">
+        <div ref={consoleRef} className="flex-1 p-5 overflow-y-auto space-y-2 scrollbar-none text-left">
           {visibleLines.map((line, idx) => (
             <p
               key={idx}
@@ -91,8 +94,6 @@ export default function TerminalSimulator() {
           {isTyping && (
             <span className="inline-block w-1.5 h-3.5 bg-accent ml-0.5 animate-pulse" />
           )}
-
-          <div ref={terminalEndRef} />
         </div>
 
         {/* Terminal Footer Panel */}
