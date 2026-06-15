@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import { useLenis } from './hooks/useLenis'
 import CustomCursor from './components/cursor/CustomCursor'
 import Nav from './components/nav/Nav'
@@ -10,8 +11,10 @@ import ProjectDetail from './pages/ProjectDetail'
 import CredentialsPage from './pages/CredentialsPage'
 import ContactPage from './pages/ContactPage'
 import { useSoundSynth } from './hooks/useSoundSynth'
+import Preloader from './components/effects/Preloader'
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true)
   useLenis()
   const { startDrone, updateDrone, stopDrone } = useSoundSynth()
 
@@ -71,6 +74,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
       <CustomCursor />
       <Nav />
       <main>
