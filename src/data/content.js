@@ -105,14 +105,14 @@ export const skills = {
 
 export const credentials = [
   { earned: true, name: 'ISC2 Certified in Cybersecurity (CC)', image: '/assets/certs/isc2-cc.png' },
-  { earned: true, name: 'TryHackMe — Jr. Pentester', image: '/assets/certs/THM-2AFAXWEK7F (Jr. Pentester)_page-0001.jpg' },
-  { earned: true, name: 'TryHackMe - COMPTIA+ PENTEST', image: '/assets/certs/THM-5AA1Y6NCVH (COMPTIA+ PENTEST)_pages-to-jpg-0001.jpg' },
+  { earned: true, name: 'TryHackMe — Jr. Pentester', image: '/assets/certs/thm-jr-pentester.jpg' },
+  { earned: true, name: 'TryHackMe - COMPTIA+ PENTEST', image: '/assets/certs/thm-comptia-pentest.jpg' },
 ]
 
 export const ctfs = [
-  { event: 'TryHackMe - Industrial Intrusion CTF', image: '/assets/certs/THM-2ADKVFVLUF (Industrial Intrusion)_page-0001.jpg' },
-  { event: 'HackTheBox - Apocalypse 2025', image: '/assets/certs/HTB-Apocalypse-2025_page-0001.jpg' },
-  { event: 'TryHackMe - HoneyNet Collapse', image: '/assets/certs/THM-VDY6WOTT8D (Honeynet Collapse)_pages-to-jpg-0001.jpg' },
+  { event: 'TryHackMe - Industrial Intrusion CTF', image: '/assets/certs/thm-industrial-intrusion.jpg' },
+  { event: 'HackTheBox - Apocalypse 2025', image: '/assets/certs/htb-apocalypse-2025.jpg' },
+  { event: 'TryHackMe - HoneyNet Collapse', image: '/assets/certs/thm-honeynet.jpg' },
 ]
 
 export const now = {
