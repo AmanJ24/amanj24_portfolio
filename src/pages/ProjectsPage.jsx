@@ -83,6 +83,12 @@ export default function ProjectsPage() {
                               alt="Entrustory Dashboard"
                               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
                             />
+                          ) : project.slug === 'blacksignal' ? (
+                            <img
+                              src="/assets/BlackSignal.png"
+                              alt="BlackSignal Dashboard"
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
+                            />
                           ) : (
                             <span className="font-mono text-[9px] text-muted/30 uppercase tracking-widest leading-relaxed px-4">
                               [ {project.name.toUpperCase()} SYSTEM PREVIEW ]
