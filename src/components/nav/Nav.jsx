@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { person } from '../../data/content'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAssets } from '../../hooks/useAssets'
 import Magnetic from '../effects/Magnetic'
 import { useSoundSynth } from '../../hooks/useSoundSynth'
@@ -10,7 +9,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { hasResume } = useAssets()
-  const { muted, toggleMute, playTick, playClick } = useSoundSynth()
+  const { playTick, playClick } = useSoundSynth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -33,6 +32,7 @@ export default function Nav() {
   const navLinks = [
     { label: 'Home', href: '/', external: false, internal: true },
     { label: 'Work', href: '/projects', external: false, internal: true },
+    { label: 'Experience', href: '/experience', external: false, internal: true },
     { label: 'Credentials', href: '/credentials', external: false, internal: true },
     { label: 'Contact', href: '/contact', external: false, internal: true },
     ...(hasResume ? [{ label: 'Resume', href: '/assets/resume.pdf', external: true }] : []),

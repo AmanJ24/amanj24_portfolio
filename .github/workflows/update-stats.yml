@@ -1,0 +1,48 @@
+name: Update TryHackMe Statistics
+
+on:
+  schedule:
+    # Run every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Allow manual triggering from GitHub Action UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Scraper Dependencies
+        run: |
+          npm install playwright
+          npx playwright install chromium
+
+      - name: Run Stats Scraper
+        run: node scripts/update_tryhackme.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if content.js was modified
+          if ! git diff --quiet src/data/content.js; then
+            echo "Stats updated, committing changes..."
+            git add src/data/content.js
+            git commit -m "chore: auto-update TryHackMe profile statistics"
+            git push
+          else
+            echo "No stats changes detected."
+          fi

@@ -1,24 +1,32 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { statement, marqueeDevSkills, marqueeSecSkills } from '../../data/content'
+import { statement, marqueeDevLogos, marqueeSecLogos } from '../../data/content'
 import NetworkMesh from '../canvas/NetworkMesh'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function MarqueeStrip({ items, reverse = false, className = '' }) {
-  const content = [...items, ...items, ...items, ...items].join('  ·  ') + '  ·  '
+  // We duplicate items exactly twice to construct a clean repeating track for the marquee translateX(-50%)
+  const repeatedItems = [...items, ...items]
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap py-4 ${className}`}>
+    <div className={`overflow-hidden whitespace-nowrap py-6 ${className}`}>
       {/* Track container to capture skewX transformations */}
-      <div className={`marquee-track inline-flex ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
-        <span className="font-mono text-sm md:text-base text-muted/50 inline-block pr-6 tracking-wider">
-          {content}
-        </span>
-        <span className="font-mono text-sm md:text-base text-muted/50 inline-block pr-6 tracking-wider">
-          {content}
-        </span>
+      <div className={`marquee-track inline-flex gap-20 items-center ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
+        {repeatedItems.map((item, idx) => (
+          <div
+            key={`${item.slug}-${idx}`}
+            className="inline-flex items-center justify-center group/logo relative px-4"
+            title={item.name}
+          >
+            <img
+              src={`https://cdn.simpleicons.org/${item.slug}/BFA98A`}
+              alt={item.name}
+              className="w-10 h-10 md:w-12 md:h-12 object-contain max-w-none transition-all duration-500 opacity-50 group-hover/logo:opacity-100 group-hover/logo:scale-110 group-hover/logo:brightness-125 filter group-hover/logo:drop-shadow-[0_0_12px_rgba(191,169,138,0.4)]"
+            />
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -103,10 +111,7 @@ export default function Statement() {
       {/* Scoped background particle mesh */}
       <NetworkMesh />
 
-      {/* Section counter */}
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 mb-20 relative z-10">
-        <span className="font-mono text-xs text-muted tracking-widest">02 / 09</span>
-      </div>
+
 
       {/* Statement text */}
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 mb-28 md:mb-40 relative z-10">
@@ -129,9 +134,9 @@ export default function Statement() {
 
       {/* Marquee strips */}
       <div className="border-y border-border/40 select-none relative z-10">
-        <MarqueeStrip items={marqueeDevSkills} />
+        <MarqueeStrip items={marqueeDevLogos} />
         <div className="h-px bg-border/20" />
-        <MarqueeStrip items={marqueeSecSkills} reverse />
+        <MarqueeStrip items={marqueeSecLogos} reverse />
       </div>
     </section>
   )

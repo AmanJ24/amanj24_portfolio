@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetail from './pages/ProjectDetail'
 import CredentialsPage from './pages/CredentialsPage'
+import ExperiencePage from './pages/ExperiencePage'
 import ContactPage from './pages/ContactPage'
 import { useSoundSynth } from './hooks/useSoundSynth'
 import Preloader from './components/effects/Preloader'
@@ -85,6 +86,7 @@ export default function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/credentials" element={<CredentialsPage />} />
+          <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>

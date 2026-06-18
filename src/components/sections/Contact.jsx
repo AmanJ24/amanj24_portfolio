@@ -157,8 +157,7 @@ export default function Contact() {
       <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface/40 to-bg pointer-events-none z-10" />
 
       <div className="relative z-20 max-w-[1280px] mx-auto px-6 md:px-12">
-        {/* Section counter */}
-        <span className="font-mono text-xs text-muted tracking-widest block mb-24 md:mb-32">09 / 09</span>
+
 
         {/* Label */}
         <motion.div

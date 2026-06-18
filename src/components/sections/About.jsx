@@ -132,10 +132,7 @@ export default function About() {
         }}
       />
 
-      {/* Section counter */}
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 mb-24 relative z-10">
-        <span className="font-mono text-xs text-muted tracking-widest">05 / 09</span>
-      </div>
+
 
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 relative">
         {/* Giant decorative "ABOUT" — split letters with dynamic speed parallax */}

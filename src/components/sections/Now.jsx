@@ -113,8 +113,7 @@ export default function Now() {
       </h2>
 
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 relative z-10">
-        {/* Section counter */}
-        <span className="font-mono text-xs text-muted tracking-widest block mb-16 select-none">08 / 09</span>
+
 
         {/* Live Sonar Header */}
         <div className="flex justify-between items-center mb-10 select-none">

@@ -61,7 +61,7 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => {
+            {filteredProjects.map((project) => {
               return (
                 <motion.div
                   key={project.id}

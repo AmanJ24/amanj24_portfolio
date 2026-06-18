@@ -22,6 +22,32 @@ export const marqueeSecSkills = [
   'Vulnerability Assessment'
 ]
 
+export const marqueeDevLogos = [
+  { name: 'React', slug: 'react' },
+  { name: 'TypeScript', slug: 'typescript' },
+  { name: 'Python', slug: 'python' },
+  { name: 'Rust', slug: 'rust' },
+  { name: 'Node.js', slug: 'nodedotjs' },
+  { name: 'Next.js', slug: 'nextdotjs' },
+  { name: 'Tailwind CSS', slug: 'tailwindcss' },
+  { name: 'Vite', slug: 'vite' },
+  { name: 'Supabase', slug: 'supabase' },
+  { name: 'PostgreSQL', slug: 'postgresql' }
+]
+
+export const marqueeSecLogos = [
+  { name: 'Kali Linux', slug: 'kalilinux' },
+  { name: 'Tor Project', slug: 'torproject' },
+  { name: 'Wireshark', slug: 'wireshark' },
+  { name: 'Burp Suite', slug: 'burpsuite' },
+  { name: 'Metasploit', slug: 'metasploit' },
+  { name: 'Linux', slug: 'linux' },
+  { name: 'Docker', slug: 'docker' },
+  { name: 'Git', slug: 'git' },
+  { name: 'TryHackMe', slug: 'tryhackme' },
+  { name: 'OWASP', slug: 'owasp' }
+]
+
 export const projects = [
   {
     id: '01',
@@ -122,3 +148,42 @@ export const now = {
   ],
   lastUpdated: 'June 2026',
 }
+
+export const tryhackmeStats = {
+  username: 'AmanJ24',
+  rank: '#7,188',
+  percentile: 'Top 1%',
+  completedRooms: 305,
+  badgesCount: 37,
+  yearlyActivity: {
+    '2025': '3,723 events',
+    '2026': '27 events'
+  },
+  highlights: [
+    { title: 'Diamond League Member', desc: 'Reached the peak elite competitive bracket (Epic rarity).' },
+    { title: 'Path Completions', desc: 'Junior Pentester, CompTIA PenTest+ training.' },
+    { title: 'Hands-on Labs', desc: 'Exploited Active Directory, Buffer Overflows, Web Vulnerabilities, and Network Sockets.' }
+  ],
+  topBadges: [
+    { name: 'Advent of Cyber 2025', rarity: 'Rare (4.1%)', desc: 'Completed security tasks covering defense, forensics, and reverse engineering.' },
+    { name: 'Diamond League', rarity: 'Epic (0.4%)', desc: 'Maintained continuous leaderboard ranking in the peak competitive tier.' },
+    { name: 'Filesystem Sleuth', rarity: 'Epic (0.3%)', desc: 'Demonstrated proficiency in deep Linux/Windows forensics.' },
+    { name: 'HTTP Smuggler', rarity: 'Epic (0.6%)', desc: 'Successfully executed HTTP request smuggling attacks on server boundaries.' },
+    { name: 'ADversary', rarity: 'Rare (1.0%)', desc: 'Conquered Active Directory exploitation and domain escalation labs.' },
+    { name: 'Tor Circuit Isolation', rarity: 'Epic (0.6%)', desc: 'Completed Advanced Onion Network Routing labs.' }
+  ]
+}
+
+export const professionalExperience = [
+  {
+    role: 'Cybersecurity Analyst & Pentester',
+    company: 'TryHackMe (Offensive/Defensive Labs)',
+    period: '2025 - Present',
+    desc: 'Investigated network infrastructures and audited web applications. Built automated logging pipelines and mapped vulnerabilities using MITRE ATT&CK techniques in real-world simulation labs.',
+    achievements: [
+      'Ranked in the top 1% globally among millions of security practitioners.',
+      'Completed Jr. Pentester and CompTIA PenTest+ training paths.',
+      'Solved 305 capture-the-flag (CTF) and training rooms focusing on secure protocols and exploit research.'
+    ]
+  }
+]

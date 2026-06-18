@@ -216,8 +216,7 @@ export default function Approach() {
       id="approach-section"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 relative z-10">
-        {/* Section counter */}
-        <span className="font-mono text-xs text-muted tracking-widest block mb-6">06 / 09</span>
+
 
         {/* Header */}
         <motion.div
