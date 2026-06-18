@@ -21,7 +21,7 @@ export default function ProjectsPage() {
     <section className="py-40 md:py-56 bg-bg min-h-screen relative overflow-hidden select-none">
       {/* Background Graphic Asset */}
       <div
-        className="absolute inset-0 bg-cover bg-center pointer-events-none select-none mix-blend-lighten opacity-[0.03]"
+        className="absolute inset-0 bg-cover bg-center pointer-events-none select-none mix-blend-lighten opacity-[0.12]"
         style={{
           backgroundImage: 'url("/assets/about-bg.png")',
         }}

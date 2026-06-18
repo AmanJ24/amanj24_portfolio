@@ -128,7 +128,7 @@ export default function About() {
         className="absolute inset-0 bg-cover bg-center pointer-events-none select-none mix-blend-lighten"
         style={{
           backgroundImage: 'url("/assets/about-bg.png")',
-          opacity: 0.08
+          opacity: 0.18
         }}
       />
 

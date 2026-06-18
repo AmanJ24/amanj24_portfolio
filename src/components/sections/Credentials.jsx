@@ -289,7 +289,7 @@ export default function Credentials() {
           className="absolute inset-0 bg-cover bg-center pointer-events-none select-none mix-blend-lighten"
           style={{
             backgroundImage: 'url("/assets/credentials-bg.png")',
-            opacity: 0.05
+            opacity: 0.15
           }}
         />
 

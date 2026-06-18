@@ -56,10 +56,10 @@ export default function Now() {
         const speed = 0.5 + index * 0.22
         gsap.fromTo(
           letter,
-          { y: 60 * speed, opacity: 0.04 },
+          { y: 60 * speed, opacity: 0.15 },
           {
             y: -60 * speed,
-            opacity: 0.18,
+            opacity: 0.45,
             ease: 'none',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -102,7 +102,7 @@ export default function Now() {
       <h2
         ref={headingRef}
         className="absolute -left-4 md:-left-8 top-12 font-display text-[clamp(7rem,24vw,20rem)] font-normal text-text pointer-events-none select-none leading-none flex gap-1 md:gap-3"
-        style={{ opacity: 0.12 }}
+        style={{ opacity: 0.35 }}
         aria-hidden="true"
       >
         {['N', 'O', 'W'].map((l, i) => (
