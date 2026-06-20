@@ -43,9 +43,8 @@ export default function Nav() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1.8, duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
-        scrolled ? 'bg-bg/95 backdrop-blur-sm' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-sm' : 'bg-transparent'
+        }`}
       id="nav-main"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
@@ -54,10 +53,15 @@ export default function Nav() {
           <button
             onClick={scrollToTop}
             onMouseEnter={playTick}
-            className="font-display text-xl text-text tracking-tight hover:text-accent transition-colors duration-300 cursor-none"
+            className="flex items-center justify-center cursor-none"
             id="nav-logo"
+            aria-label="Home"
           >
-            AJ
+            <img
+              src="/assets/logo.png"
+              alt="Aman Jangir Logo"
+              className="h-12 w-auto hover:brightness-110 hover:scale-105 transition-all duration-300"
+            />
           </button>
         </Magnetic>
 
@@ -71,8 +75,7 @@ export default function Nav() {
                   onMouseEnter={playTick}
                   onClick={playClick}
                   className={({ isActive }) =>
-                    `font-mono text-sm transition-all duration-300 px-2 py-1 cursor-none ${
-                      isActive ? 'text-accent border-b border-accent/40' : 'text-muted hover:text-text'
+                    `font-mono text-sm transition-all duration-300 px-2 py-1 cursor-none ${isActive ? 'text-accent border-b border-accent/40' : 'text-muted hover:text-text'
                     }`
                   }
                   id={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
@@ -131,8 +134,7 @@ export default function Nav() {
                     setMenuOpen(false)
                   }}
                   className={({ isActive }) =>
-                    `font-mono text-sm transition-colors duration-300 cursor-none ${
-                      isActive ? 'text-accent' : 'text-muted hover:text-text'
+                    `font-mono text-sm transition-colors duration-300 cursor-none ${isActive ? 'text-accent' : 'text-muted hover:text-text'
                     }`
                   }
                 >

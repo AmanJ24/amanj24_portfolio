@@ -8,6 +8,7 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false)
   const [snappedTarget, setSnappedTarget] = useState(null)
   const [isTouch, setIsTouch] = useState(false)
+  const snappedTargetRef = useRef(null)
 
   useEffect(() => {
     // Detect touch devices
@@ -20,27 +21,26 @@ export default function CustomCursor() {
     const cursor = cursorRef.current
     if (!cursor) return
 
-    // QuickTo handlers for smooth organic spring lag
-    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.28, ease: 'power3.out' })
-    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.28, ease: 'power3.out' })
+    // QuickTo handlers for smooth organic spring lag (reduced duration to 0.15 for snappiness)
+    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.15, ease: 'power3.out' })
+    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.15, ease: 'power3.out' })
 
     let snappedRect = null
 
     const updateSnappedRect = () => {
-      if (snappedTarget) {
-        snappedRect = snappedTarget.getBoundingClientRect()
+      const activeTarget = snappedTargetRef.current
+      if (activeTarget) {
+        snappedRect = activeTarget.getBoundingClientRect()
       } else {
         snappedRect = null
       }
     }
 
-    // Initial bounding box calculation on snapped target change
-    updateSnappedRect()
-
     const handleMouseMove = (e) => {
-      if (snappedTarget) {
+      const activeTarget = snappedTargetRef.current
+      if (activeTarget) {
         if (!snappedRect) {
-          snappedRect = snappedTarget.getBoundingClientRect()
+          snappedRect = activeTarget.getBoundingClientRect()
         }
         const targetX = snappedRect.left + snappedRect.width / 2
         const targetY = snappedRect.top + snappedRect.height / 2
@@ -71,6 +71,8 @@ export default function CustomCursor() {
           target.closest('#nav-main')
         ) {
           setSnappedTarget(target)
+          snappedTargetRef.current = target
+          updateSnappedRect()
         }
       }
     }
@@ -81,6 +83,8 @@ export default function CustomCursor() {
         setIsHovering(false)
         setLabel('')
         setSnappedTarget(null)
+        snappedTargetRef.current = null
+        snappedRect = null
       }
     }
 
@@ -101,7 +105,7 @@ export default function CustomCursor() {
       window.removeEventListener('scroll', handleScrollOrResize)
       window.removeEventListener('resize', handleScrollOrResize)
     }
-  }, [snappedTarget])
+  }, [])
 
   // Dynamic morph shape parameters on target focus
   useEffect(() => {
