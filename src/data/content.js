@@ -138,6 +138,7 @@ export const certifications = [
 export const trainingPaths = [
   { earned: true, name: 'TryHackMe — Jr. Pentester', image: '/assets/certs/thm-jr-pentester.jpg' },
   { earned: true, name: 'TryHackMe — CompTIA PenTest+', image: '/assets/certs/thm-comptia-pentest.jpg' },
+  { earned: true, name: 'TryHackMe — Offensive Pentesting', image: '/assets/certs/thm-offensive-security.jpg' },
 ]
 
 export const ctfs = [
