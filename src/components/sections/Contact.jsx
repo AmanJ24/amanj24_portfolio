@@ -204,13 +204,24 @@ export default function Contact() {
 
         {/* Subtitle */}
         <motion.p
-          className="text-center font-body text-base text-muted mb-20 max-w-md mx-auto select-none"
+          className="text-center font-body text-base text-muted mb-4 max-w-md mx-auto select-none"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           Open to full-time, internships, and remote opportunities.
+        </motion.p>
+
+        {/* Human touch note */}
+        <motion.p
+          className="text-center font-body text-sm text-accent/80 mb-20 select-none italic"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+        >
+          I read everything that lands here.
         </motion.p>
 
         {/* Magnetic Icon links */}

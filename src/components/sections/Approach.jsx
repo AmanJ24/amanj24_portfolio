@@ -93,34 +93,26 @@ function SandboxWidget({ isHovered }) {
   )
 }
 
-function MemoryWidget({ isHovered }) {
-  const [offsets, setOffsets] = useState(['0x7FFF', '0x1C2B', '0x00FF'])
-
-  useEffect(() => {
-    if (!isHovered) return
-
-    const interval = setInterval(() => {
-      const genOffset = () => '0x' + Math.floor(Math.random() * 65535).toString(16).toUpperCase().padStart(4, '0')
-      setOffsets([genOffset(), genOffset(), genOffset()])
-    }, 120)
-
-    return () => clearInterval(interval)
-  }, [isHovered])
-
+function InferenceWidget({ isHovered }) {
   return (
     <div className="font-mono text-[8px] p-3 bg-bg/60 border border-border/40 rounded h-28 flex flex-col justify-between select-none">
       <div className="flex justify-between items-center text-muted border-b border-border/20 pb-1 mb-1">
-        <span>// STACK_AUDITOR</span>
-        <span className={isHovered ? "text-sage font-bold" : "text-muted"}>SHIELD: ACTIVE</span>
+        <span>// AURA_ROUTER</span>
+        <span className={isHovered ? "text-sage font-bold" : "text-muted"}>
+          {isHovered ? "STATE: LISTENING" : "STATE: STANDBY"}
+        </span>
       </div>
       <div className="space-y-0.5 text-muted/50 leading-tight">
-        {offsets.map((off, idx) => (
-          <div key={idx} className="flex justify-between">
-            <span>REG_EBP_{idx}</span>
-            <span className={isHovered ? "text-accent" : "text-muted/60"}>{off}</span>
-            <span className="text-sage">[OK]</span>
-          </div>
-        ))}
+        <div className="flex justify-between">
+          <span>MODEL:</span>
+          <span className={isHovered ? "text-accent" : "text-muted/60"}>LOCAL_LLM</span>
+          <span className="text-sage">[OK]</span>
+        </div>
+        <div className="flex justify-between">
+          <span>BUS:</span>
+          <span className={isHovered ? "text-accent" : "text-muted/60"}>EVENT_DRIVEN</span>
+          <span className="text-sage">[OK]</span>
+        </div>
       </div>
     </div>
   )
@@ -147,7 +139,7 @@ function LabCard({ item, index }) {
       case '002':
         return <SandboxWidget isHovered={isHovered} />
       case '003':
-        return <MemoryWidget isHovered={isHovered} />
+        return <InferenceWidget isHovered={isHovered} />
       default:
         return null
     }
@@ -205,7 +197,7 @@ export default function Approach() {
   const protocols = [
     { num: '001', title: 'Cryptographic Auditing', text: 'Enforcing asymmetric signature integrity in browser environments via isolated clientside keys.' },
     { num: '002', title: 'Circuit Proxy Sandbox', text: 'Routing sensitive threat analysis requests through isolated Tor circuit routing streams.' },
-    { num: '003', title: 'Vulnerability Detection', text: 'Executing real-time memory stack boundary audits and secure Unix domain authentication.' },
+    { num: '003', title: 'Local Inference Engine', text: 'Routing voice, vision, and intent events through an on-device model pipeline. Nothing leaves the machine.' },
   ]
 
   return (

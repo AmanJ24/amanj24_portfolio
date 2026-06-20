@@ -12,6 +12,7 @@ export default function About() {
   const headingRef = useRef(null)
   const p1Ref = useRef(null)
   const p2Ref = useRef(null)
+  const p3Ref = useRef(null)
   const metaRef = useRef(null)
   const lineRef = useRef(null)
 
@@ -69,6 +70,24 @@ export default function About() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: p2Ref.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+
+      // Paragraph 3 — staggered
+      gsap.fromTo(
+        p3Ref.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          delay: 0.3,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: p3Ref.current,
             start: 'top 80%',
             toggleActions: 'play none none none',
           },
@@ -163,10 +182,19 @@ export default function About() {
           {/* Paragraph 2 */}
           <p
             ref={p2Ref}
-            className="font-body text-body-lg text-muted leading-[1.8] mb-14"
+            className="font-body text-body-lg text-muted leading-[1.8] mb-8"
             style={{ opacity: 0 }}
           >
             {about.p2}
+          </p>
+
+          {/* Paragraph 3 */}
+          <p
+            ref={p3Ref}
+            className="font-body text-body-lg text-muted leading-[1.8] mb-14"
+            style={{ opacity: 0 }}
+          >
+            {about.p3}
           </p>
 
           {/* Accent line */}

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion, AnimatePresence } from 'framer-motion'
-import { skills, credentials, ctfs } from '../../data/content'
+import { skills, certifications, trainingPaths, ctfs } from '../../data/content'
 import Tilt from '../effects/Tilt'
 import { useSoundSynth } from '../../hooks/useSoundSynth'
 import GlitchText from '../effects/GlitchText'
@@ -312,15 +312,6 @@ export default function Credentials() {
 
           {/* Skills Terminals Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 mb-32 md:mb-40">
-            {/* Dev Skills Terminal */}
-            <TerminalPanel title="development">
-              <div className="space-y-8">
-                {skills.dev.map((cat, i) => (
-                  <SkillBlock key={cat.category} category={cat.category} items={cat.items} index={i} />
-                ))}
-              </div>
-            </TerminalPanel>
-
             {/* Security Skills Terminal */}
             <TerminalPanel title="security">
               <div className="space-y-8">
@@ -329,9 +320,41 @@ export default function Credentials() {
                 ))}
               </div>
             </TerminalPanel>
+
+            {/* Dev Skills Terminal */}
+            <TerminalPanel title="development">
+              <div className="space-y-8">
+                {skills.dev.map((cat, i) => (
+                  <SkillBlock key={cat.category} category={cat.category} items={cat.items} index={i} />
+                ))}
+              </div>
+            </TerminalPanel>
           </div>
 
-          {/* Credentials cards */}
+          {/* Certifications cards */}
+          <div className="mb-20 md:mb-24">
+            <motion.h3
+              className="font-mono text-sm text-muted uppercase tracking-[0.15em] mb-12 flex items-center gap-3 select-none"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <span className="w-2 h-2 rounded-full bg-sage animate-glow-sage" />
+              <GlitchText text="Certifications" />
+            </motion.h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {certifications.map((cred) => (
+                <CertCard
+                  key={cred.name}
+                  item={cred}
+                  type="credential"
+                  onImageClick={openLightbox}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Training Paths Completed cards */}
           <div className="mb-28 md:mb-36">
             <motion.h3
               className="font-mono text-sm text-muted uppercase tracking-[0.15em] mb-12 flex items-center gap-3 select-none"
@@ -340,10 +363,10 @@ export default function Credentials() {
               viewport={{ once: true }}
             >
               <span className="w-2 h-2 rounded-full bg-sage animate-glow-sage" />
-              <GlitchText text="Earned Credentials" />
+              <GlitchText text="Training Paths Completed" />
             </motion.h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {credentials.filter(c => c.earned).map((cred) => (
+              {trainingPaths.map((cred) => (
                 <CertCard
                   key={cred.name}
                   item={cred}

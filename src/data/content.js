@@ -5,7 +5,7 @@ export const person = {
   email: 'work.amanjangir@gmail.com',
 }
 
-export const statement = `The only truly secure system is one that is powered off, cast in a block of concrete and sealed in a lead-lined room with armed guards.`
+export const statement = `I build things. Then I go looking for the part that fails.`
 
 export const marqueeDevSkills = ['React', 'TypeScript', 'Python', 'Rust', 'Node.js', 'Next.js', 'Tailwind', 'Vite', 'Supabase', 'PostgreSQL']
 
@@ -98,9 +98,11 @@ export const numbers = [
   { value: '29',      label: 'Tests Passing · BlackSignal' },
 ]
 
+
 export const about = {
-  p1: `I am a full-stack engineer and application security researcher. I approach software development and security auditing not as separate disciplines, but as two perspectives of the same system. Building a functional application is only half the work; the other half is understanding its failure modes and securing its boundaries.`,
-  p2: `My technical focus lies in designing robust architectures with Rust, Go, and TypeScript, and auditing system boundaries for cryptographic, logical, and network flaws. I build tools that solve concrete problems while actively designing against potential threat vectors.`,
+  p1: `I'm a full-stack developer who got pulled toward security the way most people in this field do: by wanting to know why things break, not just how to make them work.`,
+  p2: `I build real systems. A signing platform that proves a document hasn't been tampered with. A threat-intel pipeline that routes through Tor. A local AI assistant that never sends your data anywhere. Then I go looking for the same kind of flaws in other people's code. Broken auth. Leaky APIs. The small logic gaps nobody notices until someone goes looking.`,
+  p3: `Right now that mostly means hands-on labs, CTFs, and my own projects. I'm a fresher, and I'd rather say that plainly than dress it up. I've put in real hours though, and I'm looking for a team where I can put them to use.`,
   meta: [
     { label: 'Open to', value: 'Full-time · Internship · Remote' },
     { label: 'GitHub',  value: 'AmanJ24' },
@@ -120,19 +122,22 @@ export const skills = {
     { category: 'Languages',  items: ['JavaScript', 'TypeScript', 'Python', 'Rust', 'Go', 'SQL'] },
     { category: 'Frontend',   items: ['React', 'Next.js', 'Tailwind CSS', 'Vite', 'Framer Motion', 'GSAP'] },
     { category: 'Backend',    items: ['Node.js', 'Express', 'FastAPI', 'PostgreSQL', 'Supabase', 'MongoDB', 'Prisma'] },
-    { category: 'Systems',    items: ['Tauri', 'Unix Sockets', 'SOCKS5 Proxies', 'Git', 'Docker', 'Linux'] },
+    { category: 'Systems',    items: ['Tauri', 'Unix Sockets', 'SOCKS5 Proxies', 'Git', 'Docker', 'Linux', 'EndeavourOS', 'Warp Terminal'] },
   ],
   security: [
-    { category: 'Defensive',    items: ['Threat Intel Pipelines', 'MITRE ATT&CK Mapping', 'Asymmetric Cryptography', 'Tor Routing Isolation', 'Secure IPC Sockets', 'SOCKS5 Proxying'] },
-    { category: 'Offensive',    items: ['Phishing Simulation', 'Auth & RBAC Auditing', 'API Security Testing', 'Burp Suite', 'Nmap', 'Ffuf'] },
-    { category: 'Environment',  items: ['Kali Linux', 'EndeavourOS', 'Warp Terminal', 'CTF Platforms', 'spaCy NLP'] },
+    { category: 'Offensive',    items: ['Web App Pentesting (OWASP Top 10)', 'API Security Testing', 'Active Directory Attacks', 'Buffer Overflow Exploitation', 'Auth & RBAC Auditing', 'Phishing Simulation', 'Burp Suite', 'Nmap', 'Ffuf', 'Gobuster'] },
+    { category: 'Defensive',    items: ['Threat Intel Pipelines', 'MITRE ATT&CK Mapping', 'IOC Extraction (spaCy NER)', 'Tor Routing Isolation', 'Network Traffic Analysis (Wireshark)', 'Vulnerability Assessment', 'Asymmetric Cryptography'] },
+    { category: 'Environment',  items: ['Kali Linux', 'CTF Platforms', 'SecLists'] },
   ],
 }
 
-export const credentials = [
+export const certifications = [
   { earned: true, name: 'ISC2 Certified in Cybersecurity (CC)', image: '/assets/certs/isc2-cc.png' },
+]
+
+export const trainingPaths = [
   { earned: true, name: 'TryHackMe — Jr. Pentester', image: '/assets/certs/thm-jr-pentester.jpg' },
-  { earned: true, name: 'TryHackMe - COMPTIA+ PENTEST', image: '/assets/certs/thm-comptia-pentest.jpg' },
+  { earned: true, name: 'TryHackMe — CompTIA PenTest+', image: '/assets/certs/thm-comptia-pentest.jpg' },
 ]
 
 export const ctfs = [
@@ -176,14 +181,14 @@ export const tryhackmeStats = {
 
 export const professionalExperience = [
   {
-    role: 'Cybersecurity Analyst & Pentester',
-    company: 'TryHackMe (Offensive/Defensive Labs)',
-    period: '2025 - Present',
-    desc: 'Investigated network infrastructures and audited web applications. Built automated logging pipelines and mapped vulnerabilities using MITRE ATT&CK techniques in real-world simulation labs.',
+    role: 'Offensive Security Practice',
+    company: 'TryHackMe',
+    period: '2025 - PRESENT',
+    desc: '305 rooms across network exploitation, web application vulnerabilities, Active Directory attacks, and buffer overflows, mapped against MITRE ATT&CK as I went.',
     achievements: [
-      'Ranked in the top 1% globally among millions of security practitioners.',
-      'Completed Jr. Pentester and CompTIA PenTest+ training paths.',
-      'Solved 305 capture-the-flag (CTF) and training rooms focusing on secure protocols and exploit research.'
+      'Top 1% globally, out of several million users.',
+      'Completed the Jr. Pentester and CompTIA PenTest+ learning paths.',
+      "This is practice, not employment. But it's a year of consistent reps in exactly the areas I want to work in."
     ]
   }
 ]

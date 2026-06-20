@@ -27,17 +27,17 @@ export default function Now() {
       setCurrentTime(date.toLocaleTimeString('en-US', { hour12: false }))
     }, 1000)
 
+    let logIndex = 0
     const logFeed = setInterval(() => {
       const logs = [
-        '[OK] MITRE ATT&CK database circuit mapping verified',
-        '[OK] spaCy threat vocabulary vector array sync: 100%',
-        '[OK] Ed25519 digital credential signing keys: VALID',
-        '[OK] blacksignal.async_pipeline daemon: IDLE',
-        '[OK] Vector similarity store sqlite-vec: CONNECTED',
-        '[OK] GoPhish simulated kampaign metrics: 0 alert tags',
+        '[OK] AURA event bus: listening',
+        '[OK] sqlite-vec index sync: complete',
+        '[OK] BlackSignal Tor circuit: isolated',
+        '[OK] Ed25519 signing keys: valid',
       ]
-      const randomLine = logs[Math.floor(Math.random() * logs.length)]
-      setLogLines((prev) => [...prev.slice(-3), `${new Date().toLocaleTimeString('en-US', { hour12: false })} ${randomLine}`])
+      const nextLine = logs[logIndex]
+      logIndex = (logIndex + 1) % logs.length
+      setLogLines((prev) => [...prev.slice(-3), `${new Date().toLocaleTimeString('en-US', { hour12: false })} ${nextLine}`])
     }, 4000)
 
     return () => {

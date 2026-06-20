@@ -268,7 +268,7 @@ export default function Experience() {
           {/* Right Column: Experience Timeline */}
           <div className="lg:col-span-5 flex flex-col justify-start">
             <h3 className="font-mono text-xs text-muted uppercase tracking-widest mb-8 select-none">
-              // TIMELINE OF AUDITING & PENTESTING
+              // TRAINING LOG
             </h3>
 
             <div className="relative border-l border-border/40 pl-6 md:pl-8 ml-3 space-y-12">

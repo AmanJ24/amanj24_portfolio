@@ -107,7 +107,7 @@ export default function Hero() {
           className="font-mono text-sm md:text-base text-muted mt-6 tracking-widest uppercase"
           style={{ opacity: 0 }}
         >
-          Developer · Security
+          Security · Developer
         </p>
       </div>
 

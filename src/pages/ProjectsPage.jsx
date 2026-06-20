@@ -139,7 +139,7 @@ export default function ProjectsPage() {
         {/* Footer info */}
         <div className="mt-28 text-center border-t border-border/20 pt-10">
           <span className="font-mono text-[10px] text-muted/40 uppercase tracking-[0.2em] block select-none">
-            More research coming soon.
+            More on the way.
           </span>
         </div>
       </div>
